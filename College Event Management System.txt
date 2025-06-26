@@ -1,0 +1,70 @@
+﻿College Event Management System
+
+
+CREATE DATABASE CollegeEventDB;
+USE CollegeEventDB;
+
+
+CREATE TABLE Student (
+    student_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    dept VARCHAR(50),
+    year INT
+);
+
+
+CREATE TABLE Organizer (
+    organizer_id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100),
+    contact VARCHAR(15),
+    department VARCHAR(50)
+);
+
+
+CREATE TABLE Venue (
+    venue_id INT AUTO_INCREMENT PRIMARY KEY,
+    venue_name VARCHAR(100),
+    location VARCHAR(100),
+    capacity INT
+);
+
+
+CREATE TABLE Event (
+    event_id INT AUTO_INCREMENT PRIMARY KEY,
+    event_name VARCHAR(100),
+    event_type VARCHAR(50),  -- e.g., Technical, Cultural
+    date DATE,
+    venue_id INT,
+    organizer_id INT,
+    FOREIGN KEY (venue_id) REFERENCES Venue(venue_id),
+    FOREIGN KEY (organizer_id) REFERENCES Organizer(organizer_id)
+);
+
+
+CREATE TABLE Team (
+    team_id INT AUTO_INCREMENT PRIMARY KEY,
+    team_name VARCHAR(100),
+    leader_id INT,
+    FOREIGN KEY (leader_id) REFERENCES Student(student_id)
+);
+
+
+CREATE TABLE Participation (
+    participation_id INT AUTO_INCREMENT PRIMARY KEY,
+    team_id INT,
+    event_id INT,
+    status VARCHAR(50), -- e.g., Registered, Confirmed
+    FOREIGN KEY (team_id) REFERENCES Team(team_id),
+    FOREIGN KEY (event_id) REFERENCES Event(event_id)
+);
+
+
+CREATE TABLE Result (
+    result_id INT AUTO_INCREMENT PRIMARY KEY,
+    event_id INT,
+    team_id INT,
+    position VARCHAR(10), -- e.g., 1st, 2nd
+    FOREIGN KEY (event_id) REFERENCES Event(event_id),
+    FOREIGN KEY (team_id) REFERENCES Team(team_id)
+);
